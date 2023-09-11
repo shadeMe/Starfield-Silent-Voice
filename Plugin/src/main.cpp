@@ -4,10 +4,8 @@ DLLEXPORT constinit auto SFSEPlugin_Version = []() noexcept {
 	data.PluginVersion(Plugin::Version);
 	data.PluginName(Plugin::NAME);
 	data.AuthorName(Plugin::AUTHOR);
-	data.UsesSigScanning(true);
-	//data.UsesAddressLibrary(true);
-	data.HasNoStructUse(true);
-	//data.IsLayoutDependent(true);
+	data.UsesAddressLibrary(false);
+	data.IsLayoutDependent(true);
 	data.CompatibleVersions({ SFSE::RUNTIME_LATEST });
 
 	return data;
@@ -28,17 +26,16 @@ namespace
 	}
 }
 
-/**
 // for preload plugins
-void SFSEPlugin_Preload(SFSE::LoadInterface* a_sfse);
-/**/
+void SFSEPlugin_Preload(SFSE::LoadInterface* a_sfse)
+{}
 
 DLLEXPORT bool SFSEAPI SFSEPlugin_Load(const SFSE::LoadInterface* a_sfse)
 {
 #ifndef NDEBUG
-	while (!IsDebuggerPresent()) {
+	/*while (!IsDebuggerPresent()) {
 		Sleep(100);
-	}
+	}*/
 #endif
 
 	SFSE::Init(a_sfse);
