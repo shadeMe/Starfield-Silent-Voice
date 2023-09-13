@@ -12,7 +12,7 @@ namespace RE
 	// 80
 	class DialogueResponse
 	{
-		void _ctor(TESTopicInfo* topicInfo, TESObjectREFR* speaker, TESResponse* response, BSPointerHandleRef arg4, std::uint32_t arg5);
+		void _Ctor(TESTopicInfo* topicInfo, TESObjectREFR* speaker, TESResponse* response, BSPointerHandleRef arg4, std::uint32_t arg5);
 	public:
 		// members
 		/*00*/ std::uint64_t unk00;
@@ -28,7 +28,7 @@ namespace RE
 		/*50*/ std::uint64_t unk50;
 		/*58*/ std::uint64_t unk58;
 		/*60*/ TESTopicInfo* parentInfo;
-		/*68*/ std::uint32_t unk68;  // Set to TESResponse + 0x10
+		/*68*/ std::uint32_t unk68;  // Set to TESResponse + 0x10, possible BSPointerHandleRef
 		/*6C*/ std::uint32_t unk6C;  // Set to ctor arg4, possible BSPointerHandleRef
 		/*70*/ std::uint32_t unk70;  // Set to ctor arg5, possible BSPointerHandleRef
 		/*74*/ std::uint32_t unk74;
@@ -37,6 +37,11 @@ namespace RE
 		/*7B*/ std::uint8_t  pad7B;
 		/*7C*/ std::uint16_t unk7C;
 		/*7E*/ std::uint16_t pad7E;
+
+		struct Offsets
+		{
+			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x22FC8C4) };
+		};
 	};
 	static_assert(sizeof(DialogueResponse) == 0x80);
 }

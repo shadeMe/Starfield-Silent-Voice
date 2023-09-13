@@ -97,6 +97,8 @@
 #include <vector>
 #include <version>
 
+#define SFSE_SUPPORT_XBYAK
+
 // Clib
 #include "RE/Starfield.h"
 #include "SFSE/SFSE.h"

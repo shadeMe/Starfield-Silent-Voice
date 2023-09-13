@@ -31,7 +31,14 @@ namespace RE
 	public:
 		/*00*/ BSStringPool::Entry* data;
 
-		void Set(const char* string);
+		const char* Get();
+		void        Set(const char* string);
+
+		struct Offsets
+		{
+			inline static const REL::Relocation<std::uintptr_t> Set{ REL::Offset(0x3148C30) };
+			inline static const REL::Relocation<std::uintptr_t> Get{ REL::Offset(0x0546D30) };
+		};
 	};
 	static_assert(sizeof(BSFixedString) == 0x8);
 

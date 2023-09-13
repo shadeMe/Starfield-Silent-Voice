@@ -7,8 +7,8 @@ namespace RE
 	// 18+?
 	class BSIStream
 	{
-		void _ctor(const char* FilePath, void* ParentLocation, bool Arg3);
-		void _dtor();
+		void _Ctor(const char* FilePath, void* ParentLocation, bool Arg3);
+		void _Dtor();
 	public:
 		// members
 		/*00*/ void* unk04;					// Smart pointer, actual file stream (e.g: BSResource::Archive2::ReaderStream)
@@ -16,6 +16,15 @@ namespace RE
 		/*10*/ std::uint8_t valid;			// Set to 1 if the stream's valid
 		/*11*/ std::uint8_t unk11;			// Set to 1 in ctor
 		/*12*/ std::uint8_t pad09[6];
+
+		static BSIStream* CreateInstance(const char* FilePath, void* ParentLocation, bool Arg3);
+		static void       DeleteInstance(BSIStream* Instance);
+
+		struct Offsets
+		{
+			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x30300BC) };
+			inline static const REL::Relocation<std::uintptr_t> Dtor{ REL::Offset(0x303011C) };
+		};
 	};
 	static_assert(sizeof(BSIStream) == 0x18);
 }
