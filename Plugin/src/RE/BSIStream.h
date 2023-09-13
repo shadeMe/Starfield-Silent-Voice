@@ -17,7 +17,7 @@ namespace RE
 		/*11*/ std::uint8_t unk11;			// Set to 1 in ctor
 		/*12*/ std::uint8_t pad09[6];
 
-		static BSIStream* CreateInstance(const char* FilePath, void* ParentLocation, bool Arg3);
+		static BSIStream* CreateInstance(const char* FilePath, void* ParentLocation = nullptr, bool Arg3 = false);
 		static void       DeleteInstance(BSIStream* Instance);
 
 		struct Offsets
