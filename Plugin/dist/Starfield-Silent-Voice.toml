@@ -2,7 +2,7 @@ words_per_second_of_silence = 2
 wide_characters_per_word = 3
 minimum_seconds_of_silence = 2
 skip_empty_responses = true
-use_voice_randomizer = true
+use_voice_randomizer = false
 voice_randomizer_filepaths = [
     "Data\\sound\\voice\\starfield.esm\\npcmadoringfan\\00005d3d.wem",
     "Data\\sound\\voice\\starfield.esm\\npcmadoringfan\\00017aa1.wem",

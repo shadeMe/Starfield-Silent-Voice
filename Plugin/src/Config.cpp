@@ -4,19 +4,16 @@
 namespace Config
 {
 	std::uint32_t            WordsPerSecondSilence{ 2 };
-	std::uint32_t            WideCharactersPerWord{ 3 };	// In Chinese, Japanese, Korean and other wide character languages, how many wide characters are regarded as a word?
+	std::uint32_t            WideCharactersPerWord{ 3 };  // In Chinese, Japanese, Korean and other wide character languages, how many wide characters are regarded as a word?
 	std::uint32_t            MinimumSecondsOfSilence{ 2 };
 	bool                     SkipEmptyResponses{ true };
-	bool                     UseVoiceRandomizer { false };
-	std::vector<std::string> VoiceRandomizerFilePaths { };
+	bool                     UseVoiceRandomizer{ false };
+	std::vector<std::string> VoiceRandomizerFilePaths{};
 
-	
-	
 	void Load()
 	{
 		const auto ConfigFilePath("Data\\SFSE\\Plugins\\Starfield-Silent-Voice.toml");
-		try
-		{
+		try {
 			toml::table Config(toml::parse_file(ConfigFilePath));
 
 			WordsPerSecondSilence = Config["words_per_second_of_silence"].value_or(WordsPerSecondSilence);
@@ -30,9 +27,7 @@ namespace Config
 			WordsPerSecondSilence = std::min(WordsPerSecondSilence, 1U);
 			WideCharactersPerWord = std::min(WideCharactersPerWord, 1U);
 			MinimumSecondsOfSilence = std::min(MinimumSecondsOfSilence, 1U);
-		} 
-		catch (const toml::parse_error& Error) 
-		{
+		} catch (const toml::parse_error& Error) {
 			ERROR("Couldn't parse config file @ '{}'", ConfigFilePath);
 			ERROR("Settings may be in partially loaded/reset to defaults");
 			ERROR("Error - {}", Error.what());

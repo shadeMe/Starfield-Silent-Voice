@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BSStringPool.h"
 #include "BSPointerHandleRef.h"
+#include "BSStringPool.h"
 
 namespace RE
 {
@@ -22,14 +22,14 @@ namespace RE
 	public:
 		// members
 		/*00*/ BSPointerHandleRef speaker;
-		/*04*/ std::uint32_t pad04;
-		/*08*/ BSFixedStringCS text;
-		/*10*/ TESTopicInfo* topicInfo;
-		/*18*/ BGSScene* scene;
-		/*20*/ float unk20;
-		/*24*/ float unk24;
-		/*28*/ SubtitlePriority priority;
-		/*2C*/ std::uint32_t pad2C;
+		/*04*/ std::uint32_t      pad04;
+		/*08*/ Override::BSFixedStringCS text;
+		/*10*/ TESTopicInfo*      topicInfo;
+		/*18*/ BGSScene*          scene;
+		/*20*/ float              unk20;
+		/*24*/ float              unk24;
+		/*28*/ SubtitlePriority   priority;
+		/*2C*/ std::uint32_t      pad2C;
 	};
 	static_assert(sizeof(SubtitleInfo) == 0x30);
 }

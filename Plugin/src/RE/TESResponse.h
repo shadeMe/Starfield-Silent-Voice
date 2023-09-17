@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "BSStringPool.h"
 
@@ -9,8 +9,8 @@ namespace RE
 	{
 	public:
 		// members
-		/*00*/ BSLocalizedStringIL responseText;
-		/*08*/ TESResponse* next;
-		/*10*/ std::uint32_t unk10;   // BSPointerHandleRef?
+		/*00*/ Override::BSLocalizedStringIL responseText;
+		/*08*/ TESResponse*        next;
+		/*10*/ std::uint32_t       unk10;  // BSPointerHandleRef?
 	};
 }

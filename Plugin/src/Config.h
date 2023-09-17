@@ -8,6 +8,6 @@ namespace Config
 	extern bool                     SkipEmptyResponses;
 	extern bool                     UseVoiceRandomizer;
 	extern std::vector<std::string> VoiceRandomizerFilePaths;
-	
+
 	void Load();
 }
