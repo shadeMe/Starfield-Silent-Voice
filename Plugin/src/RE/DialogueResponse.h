@@ -41,6 +41,9 @@ namespace RE
 
 		struct Offsets
 		{
+			// E8 ? ? ? ? 48 8B F8 EB 03 48 8B FE 48 8D 4F 30
+			// E8 ? ? ? ? 48 8B F8 EB 03 48 8B FE 48 8B 4C 24 ?
+			// E8 ? ? ? ? 48 8B E8 EB 03 49 8B EC 48 8D 05 ? ? ? ?
 			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x22FC8C4) };
 		};
 	};

@@ -46,7 +46,9 @@ namespace RE
 		struct Offsets
 		{
 			inline static const REL::Relocation<std::uintptr_t> Singleton{ REL::Offset(0x58F2DE0) };
+			// 41 54 41 56 41 57 48 8B EC 48 83 EC 50 49 8B F1
 			inline static const REL::Relocation<std::uintptr_t> ShowSubtitle{ REL::Offset(0x28B3A2C) };
+			// E8 ? ? ? ? EB 09 48 8B CF E8 ? ? ? ? 90 40 84 F6
 			inline static const REL::Relocation<std::uintptr_t> DisplayNextSubtitle{ REL::Offset(0x28B3CF8) };
 		};
 	};
