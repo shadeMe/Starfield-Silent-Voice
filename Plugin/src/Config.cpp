@@ -8,7 +8,8 @@ namespace Config
 	std::uint32_t            MinimumSecondsOfSilence{ 2 };
 	bool                     SkipEmptyResponses{ true };
 	bool                     UseVoiceRandomizer{ false };
-	std::vector<std::string> VoiceRandomizerFilePaths{};
+	std::vector<std::string> MaleVoiceRandomizerFilePaths{};
+	std::vector<std::string> FemaleVoiceRandomizerFilePaths{};
 
 	static constexpr auto ConfigFilePath{ "Data\\SFSE\\Plugins\\Starfield-Silent-Voice.toml" };
 
@@ -22,8 +23,12 @@ namespace Config
 			MinimumSecondsOfSilence = Config["minimum_seconds_of_silence"].value_or(MinimumSecondsOfSilence);
 			SkipEmptyResponses = Config["skip_empty_responses"].value_or(SkipEmptyResponses);
 			UseVoiceRandomizer = Config["use_voice_randomizer"].value_or(UseVoiceRandomizer);
-			for (const auto& Item : *Config["voice_randomizer_filepaths"].as_array())
-				VoiceRandomizerFilePaths.emplace_back(Item.value<std::string>().value());
+
+			for (const auto& Item : *Config["voice_randomizer_filepaths"]["male"].as_array())
+				MaleVoiceRandomizerFilePaths.emplace_back(Item.value<std::string>().value());
+
+			for (const auto& Item : *Config["voice_randomizer_filepaths"]["female"].as_array())
+				FemaleVoiceRandomizerFilePaths.emplace_back(Item.value<std::string>().value());
 
 			WordsPerSecondSilence = std::min(WordsPerSecondSilence, 1U);
 			WideCharactersPerWord = std::min(WideCharactersPerWord, 1U);

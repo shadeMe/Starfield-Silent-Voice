@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "RE/BSIStream.h"
 #include "RE/DialogueResponse.h"
+#include "RE/Misc.h"
 #include "RE/Settings.h"
 #include "RE/SubtitleManager.h"
 #include "Util.h"
@@ -50,9 +51,9 @@ namespace Hooks
 			return false;
 		}
 
-		std::string PickSilentVoiceFile(const std::string_view& ResponseText)
+		std::string PickSilentVoiceFile(const std::string_view& ResponseText, bool IsFemale)
 		{
-			static const std::string_view kSilentVoiceFilePathPrefix{ "Data\\Sound\\Voice\\Starfield-Silent-Voice\\Silence_" };
+			static const std::string_view kSilentVoiceFilePathPrefix{ "Data\\Sound\\Voice\\Starfield-Silent-Voice\\Silence" };
 			static const std::string_view kSilentVoiceFilePathSuffix{ ".wem" };
 			static const std::uint32_t    kMaximumSecondsOfSilence = 10;
 
@@ -81,18 +82,26 @@ namespace Hooks
 
 			WordCount += (WideCharCount / Config::WideCharactersPerWord);
 			SecondsOfSilence = std::clamp(WordCount / Config::WordsPerSecondSilence + 1,
-										  Config::MinimumSecondsOfSilence,
-										  kMaximumSecondsOfSilence);
+				Config::MinimumSecondsOfSilence,
+				kMaximumSecondsOfSilence);
 
-			return std::string(kSilentVoiceFilePathPrefix) + std::to_string(SecondsOfSilence) + std::string(kSilentVoiceFilePathSuffix);
+			return std::format("{}_{}_{}{}",
+				kSilentVoiceFilePathPrefix,
+				(!IsFemale ? "M" : "F"),
+				SecondsOfSilence,
+				kSilentVoiceFilePathSuffix);
 		}
 
-		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath)
+		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath, Actor* Speaker)
 		{
-			if (Config::UseVoiceRandomizer && !Config::VoiceRandomizerFilePaths.empty()) {
-				std::uniform_int_distribution<> Dist(0, Config::VoiceRandomizerFilePaths.size() - 1);
+			const auto  IsActorFemale = Misc::TESBoundObject::IsNPCFemale(Speaker->GetBaseObject());
+			const auto& RandomizedFilePaths = !IsActorFemale ?
+			                                      Config::MaleVoiceRandomizerFilePaths :
+			                                      Config::FemaleVoiceRandomizerFilePaths;
+			if (Config::UseVoiceRandomizer && !RandomizedFilePaths.empty()) {
+				std::uniform_int_distribution<> Dist(0, RandomizedFilePaths.size() - 1);
 				const auto                      RndIndex(Dist(RndGen));
-				const auto&                     RandomFilePath(Config::VoiceRandomizerFilePaths[static_cast<size_t>(RndIndex)]);
+				const auto&                     RandomFilePath(RandomizedFilePaths[static_cast<size_t>(RndIndex)]);
 
 				DialogueResponse->voiceFilePath.Set(RandomFilePath.c_str());
 				DEBUG("Swapped '{}' with randomized path '{}'", FilePath, RandomFilePath);
@@ -101,7 +110,7 @@ namespace Hooks
 				DEBUG("Path '{}' is valid", FilePath);
 			} else {
 				// Swap file with our silent placeholders.
-				const auto ReplacementFilePath(PickSilentVoiceFile(DialogueResponse->resposeText.Get()));
+				const auto ReplacementFilePath(PickSilentVoiceFile(DialogueResponse->resposeText.Get(), IsActorFemale));
 
 				DialogueResponse->voiceFilePath.Set(ReplacementFilePath.c_str());
 				Util::SubtitleHasher::Instance.Add(DialogueResponse->resposeText.Get());
@@ -119,6 +128,7 @@ namespace Hooks
 				push(r9);
 				sub(rsp, 0x20);
 
+				mov(r8, r13);
 				mov(rcx, rbx);
 				mov(rax, reinterpret_cast<std::uintptr_t>(SwapAudioFilePath));
 				call(rax);
