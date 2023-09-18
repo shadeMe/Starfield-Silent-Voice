@@ -4,3 +4,8 @@
 *.zip
 *.timestamp
 deploy-*.ps1
+Plugin/dist/Data/
+Plugin/dist/*.dll
+Plugin/dist/*.pdb
+Plugin/dist/*.lib
+Plugin/dist/*.exp

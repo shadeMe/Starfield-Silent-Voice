@@ -10,9 +10,10 @@ namespace Config
 	bool                     UseVoiceRandomizer{ false };
 	std::vector<std::string> VoiceRandomizerFilePaths{};
 
+	static constexpr auto ConfigFilePath{ "Data\\SFSE\\Plugins\\Starfield-Silent-Voice.toml" };
+
 	void Load()
 	{
-		const auto ConfigFilePath("Data\\SFSE\\Plugins\\Starfield-Silent-Voice.toml");
 		try {
 			toml::table Config(toml::parse_file(ConfigFilePath));
 
@@ -32,5 +33,8 @@ namespace Config
 			ERROR("Settings may be in partially loaded/reset to defaults");
 			ERROR("Error - {}", Error.what());
 		}
+
+		if (UseVoiceRandomizer)
+			INFO("Voice Randomizer enabled!")
 	}
 }

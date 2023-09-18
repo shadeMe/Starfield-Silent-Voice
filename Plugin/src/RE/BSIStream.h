@@ -4,7 +4,7 @@
 
 namespace RE
 {
-	// 18+?
+	// 18
 	class BSIStream
 	{
 		void _Ctor(const char* FilePath, void* ParentLocation, bool Arg3);
@@ -12,11 +12,11 @@ namespace RE
 
 	public:
 		// members
-		/*00*/ void*           unk04;     // Smart pointer, actual file stream (e.g: BSResource::Archive2::ReaderStream)
+		/*00*/ void*                     unk04;     // Smart pointer, actual file stream (e.g: BSResource::Archive2::ReaderStream)
 		/*08*/ Override::BSFixedStringCS filePath;  // Relative to the Data directory when no BSResource::Location's passed to the ctor (the game uses a static instance); otherwise, use its location
-		/*10*/ std::uint8_t    valid;     // Set to 1 if the stream's valid
-		/*11*/ std::uint8_t    unk11;     // Set to 1 in ctor
-		/*12*/ std::uint8_t    pad09[6];
+		/*10*/ std::uint8_t              valid;     // Set to 1 if the stream's valid
+		/*11*/ std::uint8_t              unk11;     // Set to 1 in ctor
+		/*12*/ std::uint8_t              pad09[6];
 
 		static BSIStream* CreateInstance(const char* FilePath, void* ParentLocation = nullptr, bool Arg3 = false);
 		static void       DeleteInstance(BSIStream* Instance);
@@ -24,9 +24,9 @@ namespace RE
 		struct Offsets
 		{
 			// E8 ? ? ? ? 90 38 5C 24 30
-			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x30300BC) };
+			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x302FD6C) };
 			// E8 ? ? ? ? 48 8B CB E8 ? ? ? ? 80 3D ? ? ? ? ? 74 1B
-			inline static const REL::Relocation<std::uintptr_t> Dtor{ REL::Offset(0x303011C) };
+			inline static const REL::Relocation<std::uintptr_t> Dtor{ REL::Offset(0x302FDCC) };
 		};
 	};
 	static_assert(sizeof(BSIStream) == 0x18);

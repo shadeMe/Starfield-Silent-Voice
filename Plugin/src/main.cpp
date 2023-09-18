@@ -11,7 +11,7 @@ DLLEXPORT constinit auto SFSEPlugin_Version = []() noexcept {
 	data.AuthorName(Plugin::AUTHOR);
 	data.UsesAddressLibrary(false);
 	data.IsLayoutDependent(true);
-	data.CompatibleVersions({ SFSE::RUNTIME_SF_1_7_23 });
+	data.CompatibleVersions({ SFSE::RUNTIME_SF_1_7_29 });
 
 	return data;
 }();

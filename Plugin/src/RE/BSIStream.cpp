@@ -18,9 +18,8 @@ namespace RE
 
 	BSIStream* BSIStream::CreateInstance(const char* FilePath, void* ParentLocation, bool Arg3)
 	{
-		// HACK! Since we don't know the exact size of this class,
-		// let's be degenerates and throw caution to the wind!
-		auto Buffer(new std::uint8_t[sizeof(BSIStream) + 0x20]);  // Extra padding just to be safe.
+		// HACK!
+		auto Buffer(new std::uint8_t[sizeof(BSIStream)]);
 		auto Transmuted(reinterpret_cast<BSIStream*>(Buffer));
 
 		Transmuted->_Ctor(FilePath, ParentLocation, Arg3);
