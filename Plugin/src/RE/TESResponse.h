@@ -9,7 +9,7 @@ namespace RE
 	{
 	public:
 		// members
-		/*00*/ Override::BSLocalizedStringIL responseText;
+		/*00*/ Override::BGSLocalizedStringIL responseText;
 		/*08*/ TESResponse*                  next;
 		/*10*/ std::uint32_t                 unk10;  // BSPointerHandleRef?
 		/*14*/ float                         unk14;  // Init to -1

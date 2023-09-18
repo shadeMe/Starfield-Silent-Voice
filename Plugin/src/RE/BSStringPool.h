@@ -38,11 +38,11 @@ namespace RE
 		using BSFixedStringCS = BSFixedString;
 
 		// 08
-		class BSLocalizedStringIL
+		class BGSLocalizedStringIL
 		{
 		public:
 			/*00*/ BSFixedStringCS data;
 		};
-		static_assert(sizeof(BSLocalizedStringIL) == 0x8);
+		static_assert(sizeof(BGSLocalizedStringIL) == 0x8);
 	}
 }
