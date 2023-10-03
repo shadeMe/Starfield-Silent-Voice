@@ -198,9 +198,9 @@ namespace Hooks
 	{
 		std::vector<CallSite> CallSites{
 			// E8 ? ? ? ? 49 8B CE E8 ? ? ? ? 40 8A BD ? ? ? ?
-			{ REL::Offset(0x28B39E0), 0xC1 },
+			{ AddressT{ REL::ID(167248) }, 0xC1 },
 			// E8 ? ? ? ? 44 88 7E 32
-			{ REL::Offset(0x28B3ABC), 0x24 },
+			{ AddressT{ REL::ID(167249) }, 0x24 },
 		};
 
 		void Detour(SubtitleManager* SubtitleManager, Actor* Speaker,
@@ -231,7 +231,7 @@ namespace Hooks
 	namespace SubtitleManager_DisplayNextSubtitle
 	{
 		// E8 ? ? ? ? 48 8D 0D ? ? ? ? FF 15 ? ? ? ? 4C 8B 25 ? ? ? ?
-		CallSite Target{ REL::Offset(0x28B4584), 0x1CB };
+		CallSite Target{ AddressT{ REL::ID(167260) }, 0x1CB };
 
 		void Detour(SubtitleManager* SubtitleManager, SubtitleInfo* Subtitle, Actor* Speaker)
 		{

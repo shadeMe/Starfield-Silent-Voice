@@ -10,7 +10,7 @@ namespace RE
 			if (Data == nullptr)
 				return std::string_view{};
 			else
-				return std::string_view{ Data->u8(), Data->length() };
+				return std::string_view{ Data->data<char>(), Data->length() };
 		}
 
 		void BSFixedString::Set(const char* string)

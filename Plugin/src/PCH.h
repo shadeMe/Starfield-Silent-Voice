@@ -101,6 +101,7 @@
 
 // Clib
 #include "RE/Starfield.h"
+#include "REL/REL.h"
 #include "SFSE/SFSE.h"
 
 // winnt

@@ -12,7 +12,7 @@ namespace RE
 	// 80
 	class DialogueResponse
 	{
-		void _Ctor(TESTopicInfo* topicInfo, TESObjectREFR* speaker, TESResponse* response, BSPointerHandleRef arg4, std::uint32_t arg5);
+		void _Ctor(TESTopicInfo* topicInfo, TESObjectREFR* speaker, Override::TESResponse* response, BSPointerHandleRef arg4, std::uint32_t arg5);
 
 	public:
 		// members
@@ -44,7 +44,7 @@ namespace RE
 			// E8 ? ? ? ? 48 8B F8 EB 03 48 8B FE 48 8D 4F 30
 			// E8 ? ? ? ? 48 8B F8 EB 03 48 8B FE 48 8B 4C 24 ?
 			// E8 ? ? ? ? 48 8B E8 EB 03 49 8B EC 48 8D 05 ? ? ? ?
-			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::Offset(0x22FC894) };
+			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::ID(145893) };
 		};
 	};
 	static_assert(sizeof(DialogueResponse) == 0x80);

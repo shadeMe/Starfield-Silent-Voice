@@ -10,8 +10,8 @@ namespace RE
 
 		struct Offsets
 		{
-			inline static const REL::Relocation<std::uintptr_t> bGeneralSubtitles_Interface{ REL::Offset(0x55AAE18) };
-			inline static const REL::Relocation<std::uintptr_t> bDialogueSubtitles_Interface{ REL::Offset(0x55AAE38) };
+			inline static const REL::Relocation<std::uintptr_t> bGeneralSubtitles_Interface{ REL::ID(869217) };
+			inline static const REL::Relocation<std::uintptr_t> bDialogueSubtitles_Interface{ REL::ID(869219) };
 		};
 	}
 }

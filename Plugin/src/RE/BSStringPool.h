@@ -30,7 +30,7 @@ namespace RE
 				// E8 ? ? ? ? 48 8B 05 ? ? ? ? 48 39 45 D8
 				// E8 ? ? ? ? 45 33 FF 48 8B 83 ? ? ? ?
 				// E8 ? ? ? ? 45 84 ED 74 59
-				inline static const REL::Relocation<std::uintptr_t> Set{ REL::Offset(0x31488E0) };
+				inline static const REL::Relocation<std::uintptr_t> Set{ REL::ID(198214) };
 			};
 		};
 		static_assert(sizeof(BSFixedString) == 0x8);

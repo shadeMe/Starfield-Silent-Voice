@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BSReadWriteLock.h"
+#include <RE/B/BSLock.h>
 #include "SubtitleInfo.h"
 
 namespace RE
@@ -45,11 +45,11 @@ namespace RE
 
 		struct Offsets
 		{
-			inline static const REL::Relocation<std::uintptr_t> Singleton{ REL::Offset(0x58F3BF8) };
+			inline static const REL::Relocation<std::uintptr_t> Singleton{ REL::ID(878829) };
 			// 41 54 41 56 41 57 48 8B EC 48 83 EC 50 49 8B F1
-			inline static const REL::Relocation<std::uintptr_t> ShowSubtitle{ REL::Offset(0x28B385C) };
+			inline static const REL::Relocation<std::uintptr_t> ShowSubtitle{ REL::ID(167247) };
 			// E8 ? ? ? ? EB 09 48 8B CF E8 ? ? ? ? 90 40 84 F6
-			inline static const REL::Relocation<std::uintptr_t> DisplayNextSubtitle{ REL::Offset(0x28B3B28) };
+			inline static const REL::Relocation<std::uintptr_t> DisplayNextSubtitle{ REL::ID(167251) };
 		};
 	};
 	static_assert(sizeof(SubtitleManager) == 0x38);
