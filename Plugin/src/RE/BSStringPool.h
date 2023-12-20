@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RE/B/BSStringPool.h"
+
 namespace RE
 {
 	// To workaround the fact that CommonLib definition doesn't define 

@@ -100,9 +100,20 @@
 #define SFSE_SUPPORT_XBYAK
 
 // Clib
-#include "RE/Starfield.h"
+// Directly including the main auto-generated "Starfield.h" is out of the 
+// question as it will include class definitions that require a specific 
+// level of STL iterator debug instrumentation (c.f RE/D/DebuggerMessages.h),
+// breaking debug builds.
+#include "SFSE/Impl/PCH.h"
+#include "RE/IDs.h"
+#include "RE/IDs_NiRTTI.h"
+#include "RE/IDs_RTTI.h"
+#include "RE/IDs_VTABLE.h"
+#include "RE/RTTI.h"
 #include "REL/REL.h"
 #include "SFSE/SFSE.h"
+
+
 
 // winnt
 #include <ShlObj_core.h>

@@ -2,10 +2,13 @@
 #include "Config.h"
 #include "RE/BSIStream.h"
 #include "RE/DialogueResponse.h"
-#include "RE/Misc.h"
-#include "RE/Settings.h"
 #include "RE/SubtitleManager.h"
 #include "Util.h"
+
+#include "RE/A/Actor.h"
+#include "RE/I/INIPrefSettingCollection.h"
+#include "RE/I/INISettingCollection.h"
+#include "RE/T/TESNPC.h"
 
 namespace Hooks
 {
@@ -94,7 +97,8 @@ namespace Hooks
 
 		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath, Actor* Speaker)
 		{
-			const auto  IsActorFemale = Misc::TESBoundObject::IsNPCFemale(Speaker->GetBaseObject());
+			const auto  NPC{ starfield_cast<TESNPC*>(Speaker->GetBaseObject()) };
+			const auto  IsActorFemale = NPC->IsFemale();
 			const auto& RandomizedFilePaths = !IsActorFemale ?
 			                                      Config::MaleVoiceRandomizerFilePaths :
 			                                      Config::FemaleVoiceRandomizerFilePaths;
@@ -174,23 +178,23 @@ namespace Hooks
 		SubtitleSettingSwapper(bool Value) :
 			NewValue(Value)
 		{
-			auto GeneralSubs{ Settings::Get(Settings::Offsets::bGeneralSubtitles_Interface) };
-			auto DialogueSubs{ Settings::Get(Settings::Offsets::bDialogueSubtitles_Interface) };
+			auto GeneralSubs{ RE::INIPrefSettingCollection::GetSingleton()->GetSetting("bGeneralSubtitles:Interface") };
+			auto DialogueSubs{ RE::INIPrefSettingCollection::GetSingleton()->GetSetting("bDialogueSubtitles:Interface") };
 
-			OldValueGeneralSubs = GeneralSubs->data.u8;
-			OldValueDialogueSubs = DialogueSubs->data.u8;
+			OldValueGeneralSubs = GeneralSubs->GetBool();
+			OldValueDialogueSubs = DialogueSubs->GetBool();
 
-			GeneralSubs->data.u8 = NewValue;
-			DialogueSubs->data.u8 = NewValue;
+			GeneralSubs->SetBool(NewValue);
+			DialogueSubs->SetBool(NewValue);
 		}
 
 		~SubtitleSettingSwapper()
 		{
-			auto GeneralSubs{ Settings::Get(Settings::Offsets::bGeneralSubtitles_Interface) };
-			auto DialogueSubs{ Settings::Get(Settings::Offsets::bDialogueSubtitles_Interface) };
+			auto GeneralSubs{ RE::INIPrefSettingCollection::GetSingleton()->GetSetting("bGeneralSubtitles:Interface") };
+			auto DialogueSubs{ RE::INIPrefSettingCollection::GetSingleton()->GetSetting("bDialogueSubtitles:Interface") };
 
-			GeneralSubs->data.u8 = OldValueGeneralSubs;
-			DialogueSubs->data.u8 = OldValueDialogueSubs;
+			GeneralSubs->SetBool(OldValueGeneralSubs);
+			DialogueSubs->SetBool(OldValueDialogueSubs);
 		}
 	};
 
