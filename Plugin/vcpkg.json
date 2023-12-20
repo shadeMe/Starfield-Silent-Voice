@@ -1,15 +1,14 @@
 {
-    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-    "name": "starfield-silent-voice",
-    "version-string": "1.0.0",
-    "description": "Fuz Ro D'oh for Starfield",
-    "homepage": "https://github.com/shadeMe/Starfield-Silent-Voice",
-    "dependencies": [
-        "fmt",
-        "spdlog",
-        "nlohmann-json",
-        "simpleini",
-        "tomlplusplus",
-        "xbyak"
-    ]
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "starfield-silent-voice",
+  "version-string": "1.2.0",
+  "description": "Fuz Ro D'oh for Starfield",
+  "homepage": "https://github.com/shadeMe/Starfield-Silent-Voice",
+  "dependencies": [
+    "spdlog",
+    "nlohmann-json",
+    "simpleini",
+    "tomlplusplus",
+    "xbyak"
+  ]
 }

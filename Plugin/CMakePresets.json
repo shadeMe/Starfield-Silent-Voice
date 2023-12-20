@@ -1,10 +1,10 @@
 {
-	"version": 6,
-	"cmakeMinimumRequired": {
-		"major": 3,
-		"minor": 26,
-		"patch": 0
-	},
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 26,
+    "patch": 0
+  },
   "configurePresets": [
     {
       "name": "common",
@@ -25,10 +25,9 @@
       "name": "packaging-vcpkg",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": {
-          "type": "STRING",
-          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-        },
+        "USING_VCPKG": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_HOST_TRIPLET": "x64-windows-static-md",
         "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
       }
     },
@@ -69,7 +68,7 @@
       "name": "compiler-msvc",
       "hidden": true,
       "environment": {
-        "PROJECT_COMPILER_FLAGS": "/cgthreads8 /diagnostics:caret /fp:contract /fp:except- /guard:cf- /permissive- /Zc:__cplusplus /Zc:enumTypes /Zc:lambda /Zc:preprocessor /Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /Zc:ternary /Zc:preprocessor /EHsc /MP /W4 /WX /external:anglebrackets /external:W0",
+        "PROJECT_COMPILER_FLAGS": "/cgthreads8 /diagnostics:caret /fp:contract /fp:except- /guard:cf- /permissive- /Zc:__cplusplus /Zc:lambda /Zc:preprocessor /Zc:referenceBinding /Zc:rvalueCast /Zc:templateScope /Zc:ternary /Zc:preprocessor /EHsc /MP /W4 /external:anglebrackets /external:W0",
         "PROJECT_COMPILER": "msvc"
       }
     },
@@ -101,49 +100,8 @@
       "environment": {
         "CC": "clang-cl",
         "CXX": "clang-cl",
-        "PROJECT_COMPILER_FLAGS": "/permissive- /EHsc /W4 /WX -Wno-overloaded-virtual -Wno-delete-non-abstract-non-virtual-dtor -Wno-inconsistent-missing-override -Wno-reinterpret-base-class -D__cpp_consteval"
+        "PROJECT_COMPILER_FLAGS": "/permissive- /EHsc /W4 -Wno-overloaded-virtual -Wno-delete-non-abstract-non-virtual-dtor -Wno-inconsistent-missing-override -Wno-reinterpret-base-class -D__cpp_consteval"
       }
-    },
-    {
-      "name": "build-release-msvc-msvc",
-      "inherits": [
-        "common",
-        "packaging-vcpkg",
-        "buildtype-release",
-        "generator-msvc",
-        "compiler-msvc"
-      ]
-    },
-    {
-      "name": "build-release-msvc-ninja",
-      "inherits": [
-        "common",
-        "packaging-vcpkg",
-        "buildtype-release",
-        "generator-ninja",
-        "compiler-msvc"
-      ]
-    },
-    {
-      "name": "build-release-clang-cl-msvc",
-      "toolset": "ClangCL",
-      "inherits": [
-        "common",
-        "packaging-vcpkg",
-        "buildtype-release",
-        "generator-msvc",
-        "compiler-clang-cl"
-      ]
-    },
-    {
-      "name": "build-release-clang-cl-ninja",
-      "inherits": [
-        "common",
-        "packaging-vcpkg",
-        "buildtype-release",
-        "generator-ninja",
-        "compiler-clang-cl"
-      ]
     },
     {
       "name": "build-debug-msvc-msvc",
@@ -185,28 +143,69 @@
         "generator-ninja",
         "compiler-clang-cl"
       ]
+    },
+    {
+      "name": "build-release-msvc-msvc",
+      "inherits": [
+        "common",
+        "packaging-vcpkg",
+        "buildtype-release",
+        "generator-msvc",
+        "compiler-msvc"
+      ]
+    },
+    {
+      "name": "build-release-msvc-ninja",
+      "inherits": [
+        "common",
+        "packaging-vcpkg",
+        "buildtype-release",
+        "generator-ninja",
+        "compiler-msvc"
+      ]
+    },
+    {
+      "name": "build-release-clang-cl-msvc",
+      "toolset": "ClangCL",
+      "inherits": [
+        "common",
+        "packaging-vcpkg",
+        "buildtype-release",
+        "generator-msvc",
+        "compiler-clang-cl"
+      ]
+    },
+    {
+      "name": "build-release-clang-cl-ninja",
+      "inherits": [
+        "common",
+        "packaging-vcpkg",
+        "buildtype-release",
+        "generator-ninja",
+        "compiler-clang-cl"
+      ]
     }
   ],
   "buildPresets": [
     {
-      "name": "release-msvc-msvc",
-      "configurePreset": "build-release-msvc-msvc",
-      "displayName": "2. (Release) MSVC - MSVC"
-    },
-    {
-      "name": "debug-msvc-msvc",
-      "configurePreset": "build-debug-msvc-msvc",
-      "displayName": "1. (Debug) MSVC - MSVC"
-    },
-    {
       "name": "debug-msvc-ninja",
       "configurePreset": "build-debug-msvc-ninja",
-      "displayName": "3. (Debug) MSVC - Ninja"
+      "displayName": "1. (Debug) MSVC - Ninja"
     },
     {
       "name": "release-msvc-ninja",
       "configurePreset": "build-release-msvc-ninja",
-      "displayName": "4. (Release) MSVC - Ninja"
+      "displayName": "2. (Release) MSVC - Ninja"
+    },
+    {
+      "name": "debug-msvc-msvc",
+      "configurePreset": "build-debug-msvc-msvc",
+      "displayName": "3. (Debug) MSVC - MSVC"
+    },
+    {
+      "name": "release-msvc-msvc",
+      "configurePreset": "build-release-msvc-msvc",
+      "displayName": "4. (Release) MSVC - MSVC"
     },
     {
       "name": "debug-clang-cl-ninja",
