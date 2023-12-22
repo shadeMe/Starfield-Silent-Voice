@@ -9,6 +9,7 @@
 #include "RE/I/INIPrefSettingCollection.h"
 #include "RE/I/INISettingCollection.h"
 #include "RE/T/TESNPC.h"
+#include "RE/T/TESActorBaseData.h"
 
 namespace Hooks
 {
@@ -97,8 +98,16 @@ namespace Hooks
 
 		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath, Actor* Speaker)
 		{
-			const auto  NPC{ starfield_cast<TESNPC*>(Speaker->GetBaseObject()) };
-			const auto  IsActorFemale = NPC->IsFemale();
+			const auto  Actor{ starfield_cast<TESActorBaseData*>(Speaker->GetBaseObject()) };
+			auto IsActorFemale{ false };
+			if (Actor == nullptr) {
+				WARN("Speaker {:08X} (Type - {})' does not have a TESActorBaseData component - Default to the male sex",
+					Speaker->GetBaseObject()->formID,
+					Speaker->GetBaseObject()->GetObjectTypeName());
+			} else {
+				IsActorFemale = Actor->IsFemale();
+			}
+
 			const auto& RandomizedFilePaths = !IsActorFemale ?
 			                                      Config::MaleVoiceRandomizerFilePaths :
 			                                      Config::FemaleVoiceRandomizerFilePaths;
