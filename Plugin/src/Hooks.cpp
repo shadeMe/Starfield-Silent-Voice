@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "RE/BSIStream.h"
 #include "RE/DialogueResponse.h"
+#include "RE/TESObjectREFR.h"
 #include "RE/SubtitleManager.h"
 #include "Util.h"
 
@@ -89,21 +90,37 @@ namespace Hooks
 				Config::MinimumSecondsOfSilence,
 				kMaximumSecondsOfSilence);
 
-			return std::format("{}_{}_{}{}",
+			return std::format("{}\\{}\\{}{}",
 				kSilentVoiceFilePathPrefix,
-				(!IsFemale ? "M" : "F"),
+				(!IsFemale ? "Male" : "Female"),
 				SecondsOfSilence,
 				kSilentVoiceFilePathSuffix);
 		}
 
+		bool HasEmptyResponseText(DialogueResponse* DialogueResponse)
+		{
+			const auto Text{ DialogueResponse->resposeText.Get() };
+			return Text.empty() || (Text.size() == 1 && Text.at(0) == ' ');
+		}
+
+		void UseSilentVoice(DialogueResponse* DialogueResponse, char* FilePath, bool IsActorFemale)
+		{
+			const auto ReplacementFilePath(PickSilentVoiceFile(DialogueResponse->resposeText.Get(), IsActorFemale));
+
+			DialogueResponse->voiceFilePath.Set(ReplacementFilePath.c_str());
+			Util::SubtitleHasher::Instance.Add(DialogueResponse->resposeText.Get());
+			DEBUG("Swapped '{}' with silent voice path '{}'", FilePath, ReplacementFilePath);
+		}
+
 		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath, Actor* Speaker)
 		{
-			const auto  Actor{ starfield_cast<TESActorBaseData*>(Speaker->GetBaseObject()) };
+			const auto BaseObject{ reinterpret_cast<Override::TESObjectREFR*>(Speaker)->GetBaseObject() };
+			const auto Actor{ starfield_cast<TESActorBaseData*>(BaseObject) };
 			auto IsActorFemale{ false };
 			if (Actor == nullptr) {
 				WARN("Speaker {:08X} (Type - {})' does not have a TESActorBaseData component - Default to the male sex",
-					Speaker->GetBaseObject()->formID,
-					Speaker->GetBaseObject()->GetObjectTypeName());
+					BaseObject->formID,
+					BaseObject->GetObjectTypeName());
 			} else {
 				IsActorFemale = Actor->IsFemale();
 			}
@@ -111,7 +128,10 @@ namespace Hooks
 			const auto& RandomizedFilePaths = !IsActorFemale ?
 			                                      Config::MaleVoiceRandomizerFilePaths :
 			                                      Config::FemaleVoiceRandomizerFilePaths;
-			if (Config::UseVoiceRandomizer && !RandomizedFilePaths.empty()) {
+
+			if (Config::ForceSilentVoice) {
+				UseSilentVoice(DialogueResponse, FilePath, IsActorFemale);
+			} else if (Config::UseVoiceRandomizer && !RandomizedFilePaths.empty()) {
 				std::uniform_int_distribution<> Dist(0, RandomizedFilePaths.size() - 1);
 				const auto                      RndIndex(Dist(RndGen));
 				const auto&                     RandomFilePath(RandomizedFilePaths[static_cast<size_t>(RndIndex)]);
@@ -121,14 +141,10 @@ namespace Hooks
 			} else if (HasValidPath(FilePath)) {
 				DialogueResponse->voiceFilePath.Set(FilePath);
 				DEBUG("Path '{}' is valid", FilePath);
-			} else {
-				// Swap file with our silent placeholders.
-				const auto ReplacementFilePath(PickSilentVoiceFile(DialogueResponse->resposeText.Get(), IsActorFemale));
-
-				DialogueResponse->voiceFilePath.Set(ReplacementFilePath.c_str());
-				Util::SubtitleHasher::Instance.Add(DialogueResponse->resposeText.Get());
-				DEBUG("Swapped '{}' with silent voice path '{}'", FilePath, ReplacementFilePath);
-			}
+			} else if (HasEmptyResponseText(DialogueResponse) && Config::SkipEmptyResponses) {
+				DEBUG("Response is empty - Ignoring");
+			} else
+				UseSilentVoice(DialogueResponse, FilePath, IsActorFemale);
 		}
 
 		struct Hook : Xbyak::CodeGenerator
@@ -210,9 +226,9 @@ namespace Hooks
 	namespace SubtitleManager_ShowSubtitle
 	{
 		std::vector<CallSite> CallSites{
-			// E8 ? ? ? ? 49 8B CE E8 ? ? ? ? 40 8A BD ? ? ? ?
+			// E8 ? ? ? ? 49 8B CE E8 ? ? ? ? 8A 5C 24 50
 			{ AddressT{ REL::ID(167248) }, 0xC1 },
-			// E8 ? ? ? ? 44 88 7E 32
+			// E8 ? ? ? ? C6 46 32 01
 			{ AddressT{ REL::ID(167249) }, 0x24 },
 		};
 
@@ -225,7 +241,7 @@ namespace Hooks
 			if (ForceSubs) {
 				SubtitleSettingSwapper Swap(true);
 				SubtitleManager->ShowSubtitle(Speaker, Subtitle, Topic, MaxSubtitleDistance, Arg5, Arg6);
-				DEBUG("[SubtitleManager::ShowSubtitle] Forced subtitles for response '{}'", Subtitle->Get());
+				TRACE("[SubtitleManager::ShowSubtitle] Forced subtitles for response '{}'", Subtitle->Get());
 			} else
 				SubtitleManager->ShowSubtitle(Speaker, Subtitle, Topic, MaxSubtitleDistance, Arg5, Arg6);
 		}
@@ -252,7 +268,7 @@ namespace Hooks
 			if (ForceSubs) {
 				SubtitleSettingSwapper Swap(true);
 				SubtitleManager->DisplayNextSubtitle(Subtitle, Speaker);
-				DEBUG("[SubtitleManager::DisplayNextSubtitle] Forced subtitles for response '{}'", Subtitle->text.Get());
+				TRACE("[SubtitleManager::DisplayNextSubtitle] Forced subtitles for response '{}'", Subtitle->text.Get());
 			} else
 				SubtitleManager->DisplayNextSubtitle(Subtitle, Speaker);
 		}

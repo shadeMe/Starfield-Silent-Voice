@@ -42,6 +42,7 @@ DLLEXPORT bool SFSEAPI SFSEPlugin_Load(const SFSE::LoadInterface* a_sfse)
 
 	SFSE::Init(a_sfse);
 	DKUtil::Logger::Init(Plugin::NAME, std::to_string(Plugin::Version));
+	DKUtil::Logger::SetLevel(spdlog::level::level_enum::debug);
 	SFSE::AllocTrampoline(0x100);
 	SFSE::GetMessagingInterface()->RegisterListener(MessageCallback);
 

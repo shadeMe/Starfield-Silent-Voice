@@ -25,7 +25,8 @@ namespace RE
 		{
 			// E8 ? ? ? ? 90 38 5C 24 30
 			inline static const REL::Relocation<std::uintptr_t> Ctor{ REL::ID(195667) };
-			// E8 ? ? ? ? 48 8B CB E8 ? ? ? ? 80 3D ? ? ? ? ? 74  
+			// E8 ? ? ? ? 48 8B C7 4C 8D 9C 24 ? ? ? ? 49 8B 5B 38 49 8B 73 40 49 8B 7B 48
+			// E8 ? ? ? ? 90 8B CF E8 ? ? ? ? 48 8B 9C 24 ? ? ? ? 48 83 C4 60
 			inline static const REL::Relocation<std::uintptr_t> Dtor{ REL::ID(195669) };
 		};
 	};

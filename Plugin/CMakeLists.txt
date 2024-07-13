@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.21)
 # info
 project(
 	Starfield-Silent-Voice
-	VERSION 1.3.1
+	VERSION 1.4.0
 	LANGUAGES CXX
 )
 

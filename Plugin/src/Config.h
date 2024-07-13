@@ -9,6 +9,8 @@ namespace Config
 	extern bool                     UseVoiceRandomizer;
 	extern std::vector<std::string> MaleVoiceRandomizerFilePaths;
 	extern std::vector<std::string> FemaleVoiceRandomizerFilePaths;
+	extern bool                     ForceSilentVoice;
+
 
 	void Load();
 }

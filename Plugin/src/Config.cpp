@@ -10,6 +10,7 @@ namespace Config
 	bool                     UseVoiceRandomizer{ false };
 	std::vector<std::string> MaleVoiceRandomizerFilePaths{};
 	std::vector<std::string> FemaleVoiceRandomizerFilePaths{};
+	bool                     ForceSilentVoice{ false };
 
 	static constexpr auto ConfigFilePath{ "Data\\SFSE\\Plugins\\Starfield-Silent-Voice.toml" };
 
@@ -23,6 +24,7 @@ namespace Config
 			MinimumSecondsOfSilence = Config["minimum_seconds_of_silence"].value_or(MinimumSecondsOfSilence);
 			SkipEmptyResponses = Config["skip_empty_responses"].value_or(SkipEmptyResponses);
 			UseVoiceRandomizer = Config["use_voice_randomizer"].value_or(UseVoiceRandomizer);
+			ForceSilentVoice = Config["force_silent_voice"].value_or(ForceSilentVoice);
 
 			for (const auto& Item : *Config["voice_randomizer_filepaths"]["male"].as_array())
 				MaleVoiceRandomizerFilePaths.emplace_back(Item.value<std::string>().value());
@@ -30,9 +32,9 @@ namespace Config
 			for (const auto& Item : *Config["voice_randomizer_filepaths"]["female"].as_array())
 				FemaleVoiceRandomizerFilePaths.emplace_back(Item.value<std::string>().value());
 
-			WordsPerSecondSilence = std::min(WordsPerSecondSilence, 1U);
-			WideCharactersPerWord = std::min(WideCharactersPerWord, 1U);
-			MinimumSecondsOfSilence = std::min(MinimumSecondsOfSilence, 1U);
+			WordsPerSecondSilence = std::max(WordsPerSecondSilence, 1U);
+			WideCharactersPerWord = std::max(WideCharactersPerWord, 1U);
+			MinimumSecondsOfSilence = std::max(MinimumSecondsOfSilence, 1U);
 		} catch (const toml::parse_error& Error) {
 			ERROR("Couldn't parse config file @ '{}'", ConfigFilePath);
 			ERROR("Settings may be in partially loaded/reset to defaults");
