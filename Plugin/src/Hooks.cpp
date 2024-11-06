@@ -2,15 +2,15 @@
 #include "Config.h"
 #include "RE/BSIStream.h"
 #include "RE/DialogueResponse.h"
-#include "RE/TESObjectREFR.h"
 #include "RE/SubtitleManager.h"
 #include "Util.h"
 
 #include "RE/A/Actor.h"
 #include "RE/I/INIPrefSettingCollection.h"
 #include "RE/I/INISettingCollection.h"
-#include "RE/T/TESNPC.h"
 #include "RE/T/TESActorBaseData.h"
+#include "RE/T/TESObjectREFR.h"
+#include "RE/T/TESNPC.h"
 
 namespace Hooks
 {
@@ -114,12 +114,13 @@ namespace Hooks
 
 		void SwapAudioFilePath(DialogueResponse* DialogueResponse, char* FilePath, Actor* Speaker)
 		{
-			const auto BaseObject{ reinterpret_cast<Override::TESObjectREFR*>(Speaker)->GetBaseObject() };
+			const auto BaseObject{ reinterpret_cast<TESObjectREFR*>(Speaker)->GetBaseObject().get() };
 			const auto Actor{ starfield_cast<TESActorBaseData*>(BaseObject) };
 			auto IsActorFemale{ false };
 			if (Actor == nullptr) {
-				WARN("Speaker {:08X} (Type - {})' does not have a TESActorBaseData component - Default to the male sex",
+				WARN("Speaker {:08X} (Type - {:02X}/'{}') does not have a TESActorBaseData component - Default to the male sex",
 					BaseObject->formID,
+					BaseObject->formType.underlying(),
 					BaseObject->GetObjectTypeName());
 			} else {
 				IsActorFemale = Actor->IsFemale();
